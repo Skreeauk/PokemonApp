@@ -14,11 +14,11 @@
 <body>
     <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
         <div class="mdl-tabs__tab-bar">
-            <a href="#pokedex" class="mdl-tabs__tab is-active">Pokedex</a>
+            <a href="#pokemons" class="mdl-tabs__tab is-active">Pokemons</a>
             <a href="#captured" class="mdl-tabs__tab">Party</a>
         </div>
 
-        <div class="mdl-tabs__panel is-active" id="pokedex">
+        <div class="mdl-tabs__panel is-active" id="pokemons">
             <div class="mdl-grid">
                 {% for pokemon in data %}
                     <a href="/{{pokemon.name}}">
