@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Material Design Lite Meta Tags -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>{{name}}</title>
+</head>
+<body>
+    <div id="modal" class="modal">
+    <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id ="mycard">
+                <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Give a nickname!</h2>
+                    </div>
+
+                    <div class="mdl-card__supporting-text">
+                        <form action="{{ url_for('rename') }}" method="post">
+                            <div id="name">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="poke-name" name="pokeNickname">
+                                    <label class="mdl-textfield__label" for="poke-name">Pokemon Name</label>
+                                    <br><br><br>
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                                        Rename
+                                        <input type="submit" id="form-submit-button">
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 class="pokemon-name">{{name}}</h1>
+    <br>
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--6-col">
+            <img src="{{image}}" alt="{{name}}">
+        </div>
+        <div class="mdl-cell mdl-cell--6-col">
+            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                <div class="mdl-tabs__tab-bar">
+                    <a href="#types-panel" class="mdl-tabs__tab is-active">TYPES</a>
+                    <a href="#moves-panel" class="mdl-tabs__tab">MOVES</a>
+                </div>
+
+                <div class="mdl-tabs__panel is-active" id="types-panel">
+                    {% for type in types %}
+                        <span class="mdl-chip types">
+                            <span class="mdl-chip__text">{{type.type.name}}</span>
+                        </span>
+                    {% endfor %}
+                </div>
+
+                <div class="mdl-tabs__panel" id="moves-panel">
+                    {% for move in moves %}
+                        <span class="mdl-chip">
+                            <span class="mdl-chip__text">{{move.move.name}}</span>
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="catch-button">
+        <button id="catch" class="mdl-button mdl-js-button mdl-button--raised" type="button">Catch</button>
+            <div id="toast-message" class="mdl-js-snackbar mdl-snackbar">
+                <div class="mdl-snackbar__text"></div>
+                <button class="mdl-snackbar__action" type="button"></button>
+            </div>
+    </div>
+    <script>
+
+        var span = document.getElementsByClassName("close")[0];
+        var modal = document.getElementById("modal");
+
+        (function() {
+            var snackbarContainer = document.querySelector('#toast-message');
+            var catchButton = document.querySelector('#catch');
+            var modal = document.getElementById("modal");
+
+            catchButton.addEventListener('click', function() {
+                var chance = Math.round(Math.random());
+                if (chance == 0) {
+                    var data = {message: 'Catch Failed! Please Try Again'};
+                } else {
+                    var data = {message: 'Catch Successful!'};
+                    modal.style.display = "block";
+                }
+                snackbarContainer.MaterialSnackbar.showSnackbar(data);
+            });
+        }());
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
