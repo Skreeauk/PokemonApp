@@ -74,6 +74,10 @@ img {
     text-transform: capitalize;
 }
 
+#poke-name {
+    display: none;
+}
+
 #form-submit-button {
     display: none;
 }

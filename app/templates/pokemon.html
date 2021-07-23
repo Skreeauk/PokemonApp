@@ -26,8 +26,9 @@
                         <form action="{{ url_for('rename') }}" method="post">
                             <div id="name">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" id="poke-name" name="pokeNickname">
-                                    <label class="mdl-textfield__label" for="poke-name">Pokemon Name</label>
+                                    <input class="mdl-textfield__input" type="text" id="poke-nick" name="pokeNickname">
+                                    <label class="mdl-textfield__label" for="poke-nick">Pokemon Name</label>
+                                    <input type="text" id="poke-name" value="{{name}}" name="pokeName">
                                     <br><br><br>
                                     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
                                         Rename
