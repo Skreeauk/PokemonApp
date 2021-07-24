@@ -1,12 +1,11 @@
-from flask import Flask, render_template, url_for, request, redirect
-import requests
+from flask import Flask, render_template, url_for, request, redirect, flash
 from functions import pokemonList, pokemonData
 
-url = "https://graphql-pokeapi.vercel.app/api/graphql/"
-
-party = []
+#pokenickname, pokename
+party = [[], []]
 
 app = Flask(__name__)
+app.secret_key = b'1239fdad8sad73'
 
 @app.route("/")
 def home():
@@ -14,12 +13,11 @@ def home():
 
     party_data = []
 
-    if len(party) > 0:
-        for pokemon in party:
-
-            r_data = pokemonData(pokemon[1])
+    if len(party[1]) > 0:
+        for i in range(len(party[1])):
+            r_data = pokemonData(party[1][i])
             image = r_data['data']['pokemon']['sprites']['front_default']
-            party_data.append((pokemon[0], image))
+            party_data.append([party[0][i], image])
 
     return render_template('home.html', data=data, party=party_data)
 
@@ -35,13 +33,26 @@ def pokemonDetail(pokemon_name):
 def rename():
     pokenickname = request.form['pokeNickname']
     pokename = request.form['pokeName']
-    party.append((pokenickname, pokename))
+
+    if len(party[0]) > 0:
+        if pokenickname in party[0]:
+            flash("Nickname already exists")
+            return redirect(url_for('pokemonDetail', pokemon_name=pokename))
+
+    party[0].append(pokenickname)
+    party[1].append(pokename)
     return redirect(url_for('home'))
 
-@app.route("/release")
+@app.route("/release", methods=['POST'])
 def release():
-    party.pop()
-    return redirect(url_for('home'))
+    pokenickname = request.form['pokeNickname']
+
+    for i in range(len(party[0])):
+        nickname = party[0][i]
+        if nickname == pokenickname:
+            party[0].pop(i)
+            party[1].pop(i)
+            return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)
